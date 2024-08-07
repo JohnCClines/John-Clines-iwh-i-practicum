@@ -1,0 +1,25 @@
+doctype html
+html
+    head
+        title= title
+        link(rel="stylesheet", href="/css/style.css")
+    body
+        h1 Update Custom Object Form
+        a(href="/") Return to the homepage
+        form(action="/update-cobj", method="post")
+            div
+                label(for="name") Name:
+                input(type="text", id="name", name="name", required)
+            div
+                label(for="cuteness_level") Cuteness Level:
+                input(type="number", id="cuteness_level", name="cuteness_level", min="1", max="10", step="1", required)
+            div
+                label(for="habitat") Habitat:
+                input(type="text", id="habitat", name="habitat", required)
+            div
+                label(for="should_i_have_one_as_a_pet") Should I Have One As A Pet:
+                select(id="should_i_have_one_as_a_pet", name="should_i_have_one_as_a_pet", required)
+                    option(value="true") True
+                    option(value="false") False
+            div
+                button(type="submit") Submit
