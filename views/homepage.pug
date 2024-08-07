@@ -2,6 +2,7 @@ doctype html
 html
     head
         title= title
+        link(rel="stylesheet", href="/css/style.css")
     body
         h1 Custom Object Table
         a(href="/update-cobj") Add to this table
@@ -10,10 +11,10 @@ html
                 th Name
                 th Cuteness Level
                 th Habitat
-                th Do I Deserve One As A Pet?
+                th Should I Have One As A Pet
             each obj in customObjects
                 tr
                     td= obj.properties.name
                     td= obj.properties.cuteness_level
                     td= obj.properties.habitat
-                    td= obj.properties.do_i_deserve_one_as_a_pet
+                    td= obj.properties.should_i_have_one_as_a_pet

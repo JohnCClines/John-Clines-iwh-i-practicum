@@ -11,19 +11,19 @@ app.use(express.json());
 const PRIVATE_APP_ACCESS = process.env.HS_PAT;
 
 // TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
-
 app.get('/', async (req, res) => {
     const properties = [
         "name",
         "cuteness_level",
         "habitat",
         "should_i_have_one_as_a_pet"
-      ];
+    ];
     const headers = {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
     };
-    const customObjectEndpoint = `https://api.hubspot.com/crm/v3/objects/animals?${properties}`;
+    const propertyParams = properties.map(prop => `properties=${prop}`).join('&');
+    const customObjectEndpoint = `https://api.hubspot.com/crm/v3/objects/animals?${propertyParams}`;
 
     try {
         const response = await axios.get(customObjectEndpoint, { headers });
@@ -39,7 +39,6 @@ app.get('/', async (req, res) => {
         res.status(500).send('Error fetching custom object data');
     }
 });
-
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
 
 app.get('/update-cobj', (req, res) => {
@@ -50,7 +49,30 @@ app.get('/update-cobj', (req, res) => {
 
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
 
-app.post('/update-cobj',)
+app.post('/update-cobj', async (req, res) => {
+    const customObjectEndpoint = 'https://api.hubspot.com/crm/v3/objects/animals';
+    const headers = {
+        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+        'Content-Type': 'application/json'
+    };
+
+    const newCustomObject = {
+        properties: {
+            name: req.body.name,
+            cuteness_level: req.body.cuteness_level,
+            habitat: req.body.habitat,
+            should_i_have_one_as_a_pet: req.body.should_i_have_one_as_a_pet
+        }
+    };
+
+    try {
+        await axios.post(customObjectEndpoint, newCustomObject, { headers });
+        res.redirect('/');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error creating custom object');
+    }
+});
 
 /** 
 * * This is sample code to give you a reference for how you should structure your calls. 
