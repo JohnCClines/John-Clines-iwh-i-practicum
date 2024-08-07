@@ -29,14 +29,12 @@ app.get('/', async (req, res) => {
         const response = await axios.get(customObjectEndpoint, { headers });
         const customObjects = response.data.results;
         console.log(customObjects);
-
         res.render('homepage', {
             title: 'Custom Object List | Integrating With HubSpot I Practicum',
             customObjects
         });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error fetching custom object data');
     }
 });
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
@@ -55,7 +53,6 @@ app.post('/update-cobj', async (req, res) => {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
     };
-
     const newCustomObject = {
         properties: {
             name: req.body.name,
@@ -64,13 +61,11 @@ app.post('/update-cobj', async (req, res) => {
             should_i_have_one_as_a_pet: req.body.should_i_have_one_as_a_pet
         }
     };
-
     try {
         await axios.post(customObjectEndpoint, newCustomObject, { headers });
         res.redirect('/');
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error creating custom object');
     }
 });
 
